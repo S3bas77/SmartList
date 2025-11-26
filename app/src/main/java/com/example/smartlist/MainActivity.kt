@@ -9,16 +9,16 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth  // Declara aquí para usar en onStart
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        auth = FirebaseAuth.getInstance()  // Inicializa aquí
+        auth = FirebaseAuth.getInstance()
 
         val btn = findViewById<Button>(R.id.btnGoProfile)
-        val tvWelcome = findViewById<TextView>(R.id.tvWelcome)  // Asegúrate de tener este TextView
+        val tvWelcome = findViewById<TextView>(R.id.tvWelcome)
 
         // Mostrar email del usuario actual
         val currentUser = auth.currentUser

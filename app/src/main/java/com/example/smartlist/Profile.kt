@@ -14,7 +14,7 @@ class Profile : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(List())
+        replaceFragment(Usuario())
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
