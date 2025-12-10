@@ -1,59 +1,95 @@
 package com.example.smartlist
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.smartlist.databinding.FragmentEditBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldValue
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Edit.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Edit : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // Binding en lugar de synthetic
+    private var _binding: FragmentEditBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit, container, false)
+    ): View {
+        // Usar View Binding
+        _binding = FragmentEditBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Edit.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Edit().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+
+        // Acceder a las vistas a través del binding
+        binding.btnCancel.setOnClickListener {
+            // Limpiar campos
+            binding.etTitle.setText("")
+            binding.etDescription.setText("")
+        }
+
+        binding.btnSave.setOnClickListener {
+            saveShoppingList()
+        }
+
+        binding.btnAddProduct.setOnClickListener {
+            Toast.makeText(requireContext(), "Agregar producto - implementar luego", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveShoppingList() {
+        val title = binding.etTitle.text.toString().trim()
+        val description = binding.etDescription.text.toString().trim()
+
+        if (title.isEmpty()) {
+            binding.etTitle.error = "Ingresa un título"
+            return
+        }
+
+        val userId = auth.currentUser?.uid
+        if (userId == null) {
+            Toast.makeText(requireContext(), "No hay usuario autenticado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val listData = hashMapOf(
+            "titulo" to title,
+            "descripcion" to description,
+            "completada" to false,
+            "fechaCreacion" to FieldValue.serverTimestamp(),
+            "cantidadProductos" to 0
+        )
+
+        db.collection("usuarios")
+            .document(userId)
+            .collection("listas")
+            .add(listData)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Lista guardada exitosamente", Toast.LENGTH_SHORT).show()
+                binding.etTitle.setText("")
+                binding.etDescription.setText("")
             }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
