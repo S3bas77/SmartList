@@ -1,7 +1,9 @@
 package com.example.smartlist.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -31,16 +33,18 @@ class ShoppingListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val list = lists[position]
 
-        holder.tvTitle.text = list.title
-        holder.tvDescription.text = list.description
-        holder.tvCount.text = "${list.productCount} productos"
+        // 🔍 AGREGAR ESTOS LOGS PARA DEBUGGING
+        Log.d("ADAPTER_DEBUG", "Posición $position: ID=${list.id}")
+        Log.d("ADAPTER_DEBUG", "Título recibido: '${list.titulo}'")
+        Log.d("ADAPTER_DEBUG", "Descripción recibida: '${list.descripcion}'")
+        Log.d("ADAPTER_DEBUG", "Completada: ${list.completada}")
 
-        // Sin colores por ahora
-        if (list.completed) {
-            holder.btnMarkComplete.text = "Desmarcar"
-        } else {
-            holder.btnMarkComplete.text = "Marcar"
-        }
+        // Mostrar en la UI - SIEMPRE usar valores por defecto si son null
+        holder.tvTitle.text = list.titulo.ifEmpty { "Sin título" }
+        holder.tvDescription.text = list.descripcion.ifEmpty { "Sin descripción" }
+        holder.tvCount.text = "${list.cantidadProductos} productos"
+
+        holder.btnMarkComplete.text = if (list.completada) "Desmarcar" else "Marcar"
 
         holder.btnMarkComplete.setOnClickListener {
             onToggleComplete(list)

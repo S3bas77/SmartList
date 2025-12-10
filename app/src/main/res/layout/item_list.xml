@@ -6,15 +6,14 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:strokeColor="?attr/colorOutline"
-    app:strokeWidth="1dp">
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="#FFFFFF">
 
         <!-- Título de la lista -->
         <TextView
@@ -24,19 +23,17 @@
             android:text="Título de la Lista"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface"/>
+            android:textColor="#000000"/>
 
         <!-- Descripción -->
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descripción de la lista..."
+            android:text="Descripción"
             android:textSize="14sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:layout_marginTop="4dp"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+            android:textColor="#333333"
+            android:layout_marginTop="4dp"/>
 
         <!-- Fila inferior -->
         <LinearLayout
@@ -54,17 +51,16 @@
                 android:layout_weight="1"
                 android:text="0 productos"
                 android:textSize="12sp"
-                android:textColor="?attr/colorPrimary"/>
+                android:textColor="#6200EE"/>
 
             <!-- Botón para marcar como completada -->
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnMarkComplete"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:paddingHorizontal="16dp"
+                android:layout_height="wrap_content"
                 android:text="Marcar"
-                style="?attr/materialButtonOutlinedStyle"
-                app:cornerRadius="16dp"/>
+                android:background="#6200EE"
+                android:textColor="#FFFFFF"/>
 
         </LinearLayout>
 
