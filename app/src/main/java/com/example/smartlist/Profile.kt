@@ -31,4 +31,7 @@ class Profile : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
     }
+    fun navigateToTab(tabId: Int) {
+        binding.bottomNavigation.selectedItemId = tabId
+    }
 }

@@ -13,18 +13,24 @@ import com.google.firebase.firestore.FieldValue
 
 class Edit : Fragment() {
 
-    // Binding en lugar de synthetic
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
+    // Lista temporal de productos
+    private val productos = mutableListOf<Producto>()
+
+    data class Producto(
+        val nombre: String,
+        val cantidad: Int
+    )
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Usar View Binding
         _binding = FragmentEditBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -35,57 +41,158 @@ class Edit : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Acceder a las vistas a través del binding
+        // Botón Cancelar: Limpia el formulario
         binding.btnCancel.setOnClickListener {
-            // Limpiar campos
-            binding.etTitle.setText("")
-            binding.etDescription.setText("")
+            limpiarFormulario()
         }
 
+        // Botón Guardar: Guarda lista con productos
         binding.btnSave.setOnClickListener {
-            saveShoppingList()
+            guardarListaConProductos()
         }
 
+        // Botón Agregar Producto: Añade producto a la lista temporal
         binding.btnAddProduct.setOnClickListener {
-            Toast.makeText(requireContext(), "Agregar producto - implementar luego", Toast.LENGTH_SHORT).show()
+            agregarProducto()
         }
+
+        // Actualizar UI inicial
+        actualizarListaProductosUI()
     }
 
-    private fun saveShoppingList() {
-        val title = binding.etTitle.text.toString().trim()
-        val description = binding.etDescription.text.toString().trim()
+    private fun agregarProducto() {
+        val nombre = binding.etProductName.text.toString().trim()
+        val cantidadStr = binding.etProductQuantity.text.toString().trim()
 
-        if (title.isEmpty()) {
-            binding.etTitle.error = "Ingresa un título"
+        // Validaciones
+        if (nombre.isEmpty()) {
+            binding.etProductName.error = "Ingresa un nombre"
+            return
+        }
+
+        val cantidad = if (cantidadStr.isEmpty()) 1 else cantidadStr.toIntOrNull() ?: 1
+
+        if (cantidad <= 0) {
+            binding.etProductQuantity.error = "La cantidad debe ser mayor a 0"
+            return
+        }
+
+        // Agregar producto a la lista temporal
+        productos.add(Producto(nombre, cantidad))
+
+        // Actualizar UI
+        actualizarListaProductosUI()
+
+        // Limpiar campos del formulario de producto
+        binding.etProductName.text?.clear()
+        binding.etProductQuantity.setText("1")
+
+        Toast.makeText(requireContext(), "✅ Producto agregado", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun actualizarListaProductosUI() {
+        if (productos.isEmpty()) {
+            binding.tvProductsList.text = "📝 No hay productos agregados..."
+            binding.tvProductCount.text = "Total: 0 productos"
+            return
+        }
+
+        val listaTexto = StringBuilder()
+        productos.forEachIndexed { index, producto ->
+            listaTexto.append("${index + 1}. ${producto.nombre} (x${producto.cantidad})\n")
+        }
+
+        binding.tvProductsList.text = listaTexto.toString()
+        binding.tvProductCount.text = "Total: ${productos.size} productos"
+    }
+
+    private fun guardarListaConProductos() {
+        val titulo = binding.etTitle.text.toString().trim()
+
+        // Validaciones
+        if (titulo.isEmpty()) {
+            binding.etTitle.error = "⚠️ Ingresa un título para la lista"
+            return
+        }
+
+        if (productos.isEmpty()) {
+            Toast.makeText(requireContext(), "❌ Agrega al menos un producto", Toast.LENGTH_SHORT).show()
             return
         }
 
         val userId = auth.currentUser?.uid
         if (userId == null) {
-            Toast.makeText(requireContext(), "No hay usuario autenticado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "❌ No hay usuario autenticado", Toast.LENGTH_SHORT).show()
             return
         }
 
+        // 1. Crear documento de la lista principal
         val listData = hashMapOf(
-            "titulo" to title,
-            "descripcion" to description,
+            "titulo" to titulo,
+            "descripcion" to binding.etDescription.text.toString().trim(),
             "completada" to false,
             "fechaCreacion" to FieldValue.serverTimestamp(),
-            "cantidadProductos" to 0
+            "cantidadProductos" to productos.size
         )
 
         db.collection("usuarios")
             .document(userId)
             .collection("listas")
             .add(listData)
-            .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Lista guardada exitosamente", Toast.LENGTH_SHORT).show()
-                binding.etTitle.setText("")
-                binding.etDescription.setText("")
+            .addOnSuccessListener { documentReference ->
+                val listaId = documentReference.id
+                // 2. Guardar productos en subcolección
+                guardarProductosEnFirestore(userId, listaId)
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "❌ Error al crear lista: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun guardarProductosEnFirestore(userId: String, listaId: String) {
+        // Usar batch para guardar todos los productos atómicamente
+        val batch = db.batch()
+
+        productos.forEach { producto ->
+            val productRef = db.collection("usuarios")
+                .document(userId)
+                .collection("listas")
+                .document(listaId)
+                .collection("productos")
+                .document()
+
+            val productData = hashMapOf(
+                "nombre" to producto.nombre,
+                "cantidad" to producto.cantidad,
+                "marcado" to false,
+                "fechaAgregado" to FieldValue.serverTimestamp()
+            )
+
+            batch.set(productRef, productData)
+        }
+
+        batch.commit()
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "✅ Lista guardada con ${productos.size} productos", Toast.LENGTH_SHORT).show()
+                limpiarFormulario()
+
+                // Navegar a la pestaña de listas usando método público de Profile
+                (activity as? Profile)?.navigateToTab(R.id.list)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "❌ Error al guardar productos: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun limpiarFormulario() {
+        // Limpiar todos los campos
+        binding.etTitle.text?.clear()
+        binding.etDescription.text?.clear()
+        binding.etProductName.text?.clear()
+        binding.etProductQuantity.setText("1")
+        binding.tvProductsList.text = "📝 No hay productos agregados..."
+        binding.tvProductCount.text = "Total: 0 productos"
+        productos.clear()
     }
 
     override fun onDestroyView() {

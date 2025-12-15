@@ -4,7 +4,7 @@ import com.google.firebase.firestore.DocumentId
 
 data class Product(
     @DocumentId var id: String = "",
-    var name: String = "",
-    var quantity: Int = 1,
-    var checked: Boolean = false
+    var nombre: String = "",
+    var cantidad: Int = 1,
+    var marcado: Boolean = false
 )

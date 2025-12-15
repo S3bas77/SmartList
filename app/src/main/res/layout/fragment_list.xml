@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Botones de filtro -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,24 +29,10 @@
             android:text="Terminadas"
             android:layout_marginStart="8dp"/>
     </LinearLayout>
-
-    <!-- Lista de listas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerLists"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:src="@drawable/baseline_add_24"
-        android:backgroundTint="#6200EE"
-        android:tint="#FFFFFF"
-        android:contentDescription="Agregar lista" />
-
 
 </LinearLayout>

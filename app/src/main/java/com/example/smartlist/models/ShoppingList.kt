@@ -3,7 +3,6 @@ package com.example.smartlist.models
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 
-// Nombres en ESPAÑOL (coinciden exactamente con Firestore)
 data class ShoppingList(
     @DocumentId
     var id: String = "",

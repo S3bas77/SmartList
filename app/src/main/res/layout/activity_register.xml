@@ -1,28 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
+    <!-- Nombre completo -->
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="100dp"
+        android:hint="Nombre completo"
+        android:inputType="textPersonName"
+        android:autofillHints="name"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Correo electrónico -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="100dp"
-        android:minHeight="48dp"
-        android:padding="16dp"
-        android:hint="Correo"
+        android:layout_marginTop="24dp"
+        android:hint="Correo electrónico"
         android:inputType="textEmailAddress"
         android:autofillHints="email"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/etName" />
 
+    <!-- Contraseña -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="0dp"
@@ -30,15 +47,15 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="24dp"
-        android:minHeight="48dp"
-        android:padding="16dp"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:autofillHints="password"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
 
+    <!-- Botón de registro -->
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="0dp"
@@ -47,9 +64,22 @@
         android:layout_marginEnd="32dp"
         android:layout_marginTop="48dp"
         android:text="Crear cuenta"
-        android:minHeight="48dp"
+        android:background="#6200EE"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+
+    <!-- Texto para ir a Login (opcional) -->
+    <TextView
+        android:id="@+id/tvGoToLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿Ya tienes cuenta? Inicia sesión"
+        android:textColor="#6200EE"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

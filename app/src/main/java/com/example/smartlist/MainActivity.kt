@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         val btn = findViewById<Button>(R.id.btnGoProfile)
         val tvWelcome = findViewById<TextView>(R.id.tvWelcome)
 
-        // Mostrar email del usuario actual
         val currentUser = auth.currentUser
         tvWelcome.text = "Bienvenido: ${currentUser?.email ?: "Usuario"}"
 
@@ -32,7 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Usa la instancia de auth que ya inicializaste
         val currentUser = auth.currentUser
 
         if (currentUser == null) {

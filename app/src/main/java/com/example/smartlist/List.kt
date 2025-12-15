@@ -19,10 +19,8 @@ import com.google.firebase.firestore.Query
 
 class List : Fragment() {
 
-    // Binding en lugar de synthetic
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: ShoppingListAdapter
@@ -33,7 +31,6 @@ class List : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Usar View Binding
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -69,7 +66,6 @@ class List : Fragment() {
                 loadShoppingLists()
             }
         }
-
         updateButtonStates()
         loadShoppingLists()
     }
@@ -100,7 +96,7 @@ class List : Fragment() {
 
         registration = query.addSnapshotListener { snapshots, error ->
             if (error != null) {
-                Log.e("DEBUG_FIREBASE", "❌ ERROR: ${error.message}")
+                Log.e("DEBUG_FIREBASE", "ERROR: ${error.message}")
                 return@addSnapshotListener
             }
 
@@ -149,11 +145,10 @@ class List : Fragment() {
                 // FORZAR recarga del listener actual
                 loadShoppingLists()
 
-                // Mostrar mensaje
                 val message = if (newCompletedState)
-                    "Lista movida a Terminadas"
+                    "Lista movida a Lisats Terminadas"
                 else
-                    "Lista movida a Pendientes"
+                    "Lista movida a Listas Pendientes"
 
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
             }
