@@ -3,7 +3,6 @@ package com.example.smartlist.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -14,14 +13,14 @@ import com.google.android.material.button.MaterialButton
 class ShoppingListAdapter(
     private var lists: MutableList<ShoppingList> = mutableListOf(),
     private val onItemClick: (ShoppingList) -> Unit,
-    private val onToggleComplete: (ShoppingList) -> Unit
+    private val onDeleteList: (ShoppingList) -> Unit  // Cambiado de toggleComplete a delete
 ) : RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
         val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
         val tvCount: TextView = itemView.findViewById(R.id.tvCount)
-        val btnMarkComplete: MaterialButton = itemView.findViewById(R.id.btnMarkComplete)
+        val btnDelete: MaterialButton = itemView.findViewById(R.id.btnMarkComplete) // Mismo ID pero función diferente
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,23 +32,34 @@ class ShoppingListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val list = lists[position]
 
-        // 🔍 AGREGAR ESTOS LOGS PARA DEBUGGING
-        Log.d("ADAPTER_DEBUG", "Posición $position: ID=${list.id}")
-        Log.d("ADAPTER_DEBUG", "Título recibido: '${list.titulo}'")
-        Log.d("ADAPTER_DEBUG", "Descripción recibida: '${list.descripcion}'")
-        Log.d("ADAPTER_DEBUG", "Completada: ${list.completada}")
+        Log.d("ADAPTER_DEBUG", "Mostrando lista: ${list.titulo}")
 
-        // Mostrar en la UI - SIEMPRE usar valores por defecto si son null
-        holder.tvTitle.text = list.titulo.ifEmpty { "Sin título" }
-        holder.tvDescription.text = list.descripcion.ifEmpty { "Sin descripción" }
+        // Mostrar datos
+        holder.tvTitle.text = list.titulo
+        holder.tvDescription.text = list.descripcion
         holder.tvCount.text = "${list.cantidadProductos} productos"
 
-        holder.btnMarkComplete.text = if (list.completada) "Desmarcar" else "Marcar"
+        // Cambiar texto del botón a "Eliminar"
+        holder.btnDelete.text = "Eliminar"
+        holder.btnDelete.setBackgroundColor(holder.itemView.context.getColor(R.color.red))
 
-        holder.btnMarkComplete.setOnClickListener {
-            onToggleComplete(list)
+        // Si la lista está completada, mostrar con estilo diferente
+        if (list.completada) {
+            holder.tvTitle.setStrikeThrough(true)
+            holder.tvTitle.alpha = 0.6f
+            holder.tvDescription.alpha = 0.6f
+        } else {
+            holder.tvTitle.setStrikeThrough(false)
+            holder.tvTitle.alpha = 1f
+            holder.tvDescription.alpha = 1f
         }
 
+        // Botón eliminar
+        holder.btnDelete.setOnClickListener {
+            onDeleteList(list)
+        }
+
+        // Clic en toda la tarjeta para ver detalle
         holder.itemView.setOnClickListener {
             onItemClick(list)
         }
@@ -61,5 +71,14 @@ class ShoppingListAdapter(
         lists.clear()
         lists.addAll(newLists)
         notifyDataSetChanged()
+    }
+}
+
+// Extensión para texto tachado
+fun TextView.setStrikeThrough(strikeThrough: Boolean) {
+    paintFlags = if (strikeThrough) {
+        paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+    } else {
+        paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
     }
 }

@@ -37,7 +37,9 @@
             android:name=".MainActivity"
             android:exported="false" />
 
-        <!-- NUEVAS ACTIVIDADES PARA LISTAS -->
+        <activity
+            android:name=".ListDetailActivity"
+            android:exported="false" />
 
     </application>
 </manifest>

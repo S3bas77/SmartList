@@ -1,5 +1,6 @@
 package com.example.smartlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.graphics.Color
@@ -43,7 +44,7 @@ class List : Fragment() {
 
         adapter = ShoppingListAdapter(
             onItemClick = { list -> openListDetail(list) },
-            onToggleComplete = { list -> toggleListComplete(list) }
+            onDeleteList = { list -> deleteShoppingList(list) }
         )
 
         binding.recyclerLists.layoutManager = LinearLayoutManager(requireContext())
@@ -69,7 +70,32 @@ class List : Fragment() {
         updateButtonStates()
         loadShoppingLists()
     }
+    private fun deleteShoppingList(list: ShoppingList) {
+        val userId = auth.currentUser?.uid ?: return
 
+        // Confirmación antes de eliminar
+        android.app.AlertDialog.Builder(requireContext())
+            .setTitle("Eliminar lista")
+            .setMessage("¿Estás seguro de eliminar '${list.titulo}'?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                // Eliminar la lista y sus productos
+                db.collection("usuarios")
+                    .document(userId)
+                    .collection("listas")
+                    .document(list.id)
+                    .delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(requireContext(), "✅ Lista eliminada", Toast.LENGTH_SHORT).show()
+                        // Recargar listas
+                        loadShoppingLists()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
     private fun updateButtonStates() {
         if (currentFilter == "pending") {
             binding.btnPending.setBackgroundColor(Color.parseColor("#6200EE"))
@@ -124,11 +150,11 @@ class List : Fragment() {
     }
 
     private fun openListDetail(list: ShoppingList) {
-        Toast.makeText(
-            requireContext(),
-            "Abrir lista: ${list.titulo}",
-            Toast.LENGTH_SHORT
-        ).show()
+        val intent = Intent(requireContext(), ListDetailActivity::class.java)
+        intent.putExtra("LISTA_ID", list.id)
+        intent.putExtra("LISTA_TITULO", list.titulo)
+        intent.putExtra("LISTA_COMPLETADA", list.completada)
+        startActivity(intent)
     }
 
     private fun toggleListComplete(list: ShoppingList) {
