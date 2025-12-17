@@ -30,11 +30,15 @@
             android:exported="false" />
 
         <activity
-            android:name=".Profile"
+            android:name=".Navbar"
             android:exported="false" />
 
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ListDetailActivity"
             android:exported="false" />
 
     </application>

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.SmartList" parent="Theme.MaterialComponents.Light.NoActionBar" />
+    <style name="Theme.SmartList" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#A18262</item>
+        <item name="colorPrimaryVariant">#A18262</item>
+        <item name="colorSecondary">#A18262</item>
+
+        <item name="android:windowBackground">#fffee8</item>
+
+        <item name="android:statusBarColor">#A18262</item>
+    </style>
 </resources>

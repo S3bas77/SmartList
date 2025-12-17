@@ -1,0 +1,82 @@
+package com.example.smartlist.adapters
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.smartlist.R
+import com.example.smartlist.models.Producto
+
+class ProductAdapter(
+    private val onProductCheck: (Producto) -> Unit
+) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
+
+    private var productos: MutableList<Producto> = mutableListOf()
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cbProducto: CheckBox = itemView.findViewById(R.id.cbProducto)
+        val tvNombre: TextView = itemView.findViewById(R.id.tvNombre)
+        val tvCantidad: TextView = itemView.findViewById(R.id.tvCantidad)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_product, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val producto = productos[position]
+
+        holder.tvNombre.text = producto.nombre
+        holder.tvCantidad.text = "Cantidad: ${producto.cantidad}"
+        holder.cbProducto.isChecked = producto.marcado
+
+        if (producto.marcado) {
+            holder.tvNombre.paintFlags = holder.tvNombre.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+            holder.tvCantidad.paintFlags = holder.tvCantidad.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+            holder.tvNombre.alpha = 0.6f
+            holder.tvCantidad.alpha = 0.6f
+        } else {
+            holder.tvNombre.paintFlags = holder.tvNombre.paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.tvCantidad.paintFlags = holder.tvCantidad.paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            holder.tvNombre.alpha = 1f
+            holder.tvCantidad.alpha = 1f
+        }
+
+        holder.cbProducto.setOnClickListener {
+            // Notificar el cambio SOLO cuando el usuario hace clic
+            onProductCheck(producto)
+
+            // Actualizar UI inmediatamente
+            val newChecked = !producto.marcado
+            producto.marcado = newChecked
+
+            if (newChecked) {
+                holder.tvNombre.paintFlags = holder.tvNombre.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+                holder.tvCantidad.paintFlags = holder.tvCantidad.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+                holder.tvNombre.alpha = 0.6f
+                holder.tvCantidad.alpha = 0.6f
+            } else {
+                holder.tvNombre.paintFlags = holder.tvNombre.paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                holder.tvCantidad.paintFlags = holder.tvCantidad.paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                holder.tvNombre.alpha = 1f
+                holder.tvCantidad.alpha = 1f
+            }
+        }
+    }
+
+    override fun getItemCount() = productos.size
+
+    fun submitList(newProductos: List<Producto>) {
+        productos.clear()
+        productos.addAll(newProductos)
+        notifyDataSetChanged()
+    }
+
+    fun getProductoList(): List<Producto> {
+        return productos.toList()  // Devuelve una copia de la lista
+    }
+}

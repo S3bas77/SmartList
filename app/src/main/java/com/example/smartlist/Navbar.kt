@@ -3,18 +3,18 @@ package com.example.smartlist
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.example.smartlist.databinding.ActivityProfileBinding
+import com.example.smartlist.databinding.ActivityNavbarBinding
 
-class Profile : AppCompatActivity() {
+class Navbar : AppCompatActivity() {
 
-    private lateinit var binding: ActivityProfileBinding
+    private lateinit var binding: ActivityNavbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityNavbarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(List())
+        replaceFragment(Usuario())
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when (it.itemId) {
@@ -30,5 +30,8 @@ class Profile : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         fragmentTransaction.commit()
+    }
+    fun navigateToTab(tabId: Int) {
+        binding.bottomNavigation.selectedItemId = tabId
     }
 }
