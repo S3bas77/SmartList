@@ -39,24 +39,19 @@ class ListDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        // Inicializar Firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         userId = auth.currentUser?.uid ?: return finish()
 
-        // Configurar RecyclerView
         adapter = ProductAdapter { producto -> toggleProductCheck(producto) }
         binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
         binding.recyclerProducts.adapter = adapter
 
-        // Configurar botón de estado
         updateCompleteButton()
 
         binding.btnToggleComplete.setOnClickListener {
             toggleListComplete()
         }
-
-        // Cargar productos
         loadProducts()
     }
 

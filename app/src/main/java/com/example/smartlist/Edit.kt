@@ -111,22 +111,21 @@ class Edit : Fragment() {
 
         // Validaciones
         if (titulo.isEmpty()) {
-            binding.etTitle.error = "⚠️ Ingresa un título para la lista"
+            binding.etTitle.error = "Ingresa un título para la lista"
             return
         }
 
         if (productos.isEmpty()) {
-            Toast.makeText(requireContext(), "❌ Agrega al menos un producto", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Agrega al menos un producto", Toast.LENGTH_SHORT).show()
             return
         }
 
         val userId = auth.currentUser?.uid
         if (userId == null) {
-            Toast.makeText(requireContext(), "❌ No hay usuario autenticado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No hay usuario autenticado", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // 1. Crear documento de la lista principal
         val listData = hashMapOf(
             "titulo" to titulo,
             "descripcion" to binding.etDescription.text.toString().trim(),
@@ -145,7 +144,7 @@ class Edit : Fragment() {
                 guardarProductosEnFirestore(userId, listaId)
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "❌ Error al crear lista: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error al crear lista: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -173,14 +172,13 @@ class Edit : Fragment() {
 
         batch.commit()
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "✅ Lista guardada con ${productos.size} productos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Lista guardada con ${productos.size} productos", Toast.LENGTH_SHORT).show()
                 limpiarFormulario()
 
-                // Navegar a la pestaña de listas usando método público de Navbar
                 (activity as? Navbar)?.navigateToTab(R.id.list)
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "❌ Error al guardar productos: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error al guardar productos: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
