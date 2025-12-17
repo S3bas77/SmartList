@@ -170,10 +170,10 @@ class ListDetailActivity : AppCompatActivity() {
     private fun updateCompleteButton() {
         if (listaCompletada) {
             binding.btnToggleComplete.text = "Desmarcar como terminada"
-            binding.btnToggleComplete.setBackgroundColor(getColor(R.color.green))
+            binding.btnToggleComplete.setBackgroundColor(getColor(R.color.pastel_green))
         } else {
             binding.btnToggleComplete.text = "Marcar como terminada"
-            binding.btnToggleComplete.setBackgroundColor(getColor(R.color.purple_500))
+            binding.btnToggleComplete.setBackgroundColor(getColor(R.color.pastel_red))
         }
     }
 

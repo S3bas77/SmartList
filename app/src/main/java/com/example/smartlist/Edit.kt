@@ -176,8 +176,8 @@ class Edit : Fragment() {
                 Toast.makeText(requireContext(), "✅ Lista guardada con ${productos.size} productos", Toast.LENGTH_SHORT).show()
                 limpiarFormulario()
 
-                // Navegar a la pestaña de listas usando método público de Profile
-                (activity as? Profile)?.navigateToTab(R.id.list)
+                // Navegar a la pestaña de listas usando método público de Navbar
+                (activity as? Navbar)?.navigateToTab(R.id.list)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), "❌ Error al guardar productos: ${e.message}", Toast.LENGTH_SHORT).show()

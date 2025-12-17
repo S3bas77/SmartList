@@ -3,22 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_main">
 
+    <!-- AppBar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Detalle de Lista"
+            android:background="@color/pastel_green"
+            android:title="Detalle de la lista"
+            android:titleTextColor="@android:color/white"
             app:navigationIcon="@drawable/ic_arrow_black"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Contenido -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +30,6 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Contador de productos -->
         <TextView
             android:id="@+id/tvProductCount"
             android:layout_width="match_parent"
@@ -34,23 +37,25 @@
             android:text="Productos: 0"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="12dp"/>
 
-        <!-- Lista de productos -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerProducts"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@drawable/bg_card"/>
 
-        <!-- Botón para marcar/desmarcar lista -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnToggleComplete"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="24dp"
-            android:textSize="16sp"
-            app:cornerRadius="8dp"/>
+            android:text="Marcar como completada"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/pastel_green"
+            app:cornerRadius="14dp"/>
 
     </LinearLayout>
 

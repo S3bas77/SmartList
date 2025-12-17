@@ -30,7 +30,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".Profile"
+            android:name=".Navbar"
             android:exported="false" />
 
         <activity

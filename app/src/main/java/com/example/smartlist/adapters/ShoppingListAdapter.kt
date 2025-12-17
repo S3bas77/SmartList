@@ -41,7 +41,7 @@ class ShoppingListAdapter(
 
         // Cambiar texto del botón a "Eliminar"
         holder.btnDelete.text = "Eliminar"
-        holder.btnDelete.setBackgroundColor(holder.itemView.context.getColor(R.color.red))
+        holder.btnDelete.setBackgroundColor(holder.itemView.context.getColor(R.color.pastel_red))
 
         // Si la lista está completada, mostrar con estilo diferente
         if (list.completada) {

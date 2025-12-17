@@ -1,100 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_main">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <!-- Título -->
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
+            android:layout_height="56dp"
             android:hint="Título de la lista *"
-            android:padding="12dp"
+            android:padding="16dp"
+            android:background="@drawable/bg_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
             android:layout_marginBottom="16dp" />
 
         <!-- Descripción -->
         <EditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:padding="12dp"
+            android:layout_height="56dp"
             android:hint="Descripción (opcional)"
+            android:padding="16dp"
+            android:background="@drawable/bg_input"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
             android:layout_marginBottom="24dp" />
 
-        <!-- SECCIÓN PRODUCTOS -->
+        <!-- Sección -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Agregar Productos"
+            android:text="Agregar productos"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="12dp" />
 
-        <!-- Formulario para nuevo producto -->
+        <!-- Form producto -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="12dp">
 
             <EditText
                 android:id="@+id/etProductName"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="2"
-                android:hint="Nombre del producto"
-                android:padding="12dp"
+                android:hint="Producto"
+                android:padding="16dp"
+                android:background="@drawable/bg_input"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary"
                 android:layout_marginEnd="8dp"/>
 
             <EditText
                 android:id="@+id/etProductQuantity"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:hint="Cantidad"
+                android:hint="Cant."
                 android:inputType="number"
-                android:padding="12dp"
-                android:text="1"/>
+                android:padding="16dp"
+                android:background="@drawable/bg_input"
+                android:text="1"
+                android:textAlignment="center"/>
         </LinearLayout>
 
         <Button
             android:id="@+id/btnAddProduct"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="➕ Agregar Producto"
+            android:layout_height="56dp"
+            android:text="➕ Agregar producto"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_button_green"
             android:layout_marginBottom="16dp"/>
 
-        <!-- Lista de productos agregados -->
+        <!-- Lista productos -->
         <TextView
             android:id="@+id/tvProductsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="100dp"
-            android:background="#f5f5f5"
-            android:padding="12dp"
+            android:minHeight="120dp"
+            android:background="@drawable/bg_card"
+            android:padding="16dp"
             android:text="No hay productos agregados..."
-            android:textColor="#666666"
-            android:layout_marginBottom="24dp"/>
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Contador de productos -->
+        <!-- Contador -->
         <TextView
             android:id="@+id/tvProductCount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Total: 0 productos"
-            android:textAlignment="center"
             android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/text_primary"
             android:layout_marginBottom="24dp"/>
 
-        <!-- Botones de acción -->
+        <!-- Acciones -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,20 +117,23 @@
             <Button
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="1"
                 android:text="Cancelar"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_button_red"
                 android:layout_marginEnd="8dp"/>
 
             <Button
                 android:id="@+id/btnSave"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:text="Guardar Lista"
+                android:text="Guardar lista"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_button_green"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
 
     </LinearLayout>
-
 </ScrollView>

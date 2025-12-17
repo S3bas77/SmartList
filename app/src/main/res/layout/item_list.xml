@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
 
     <LinearLayout
@@ -13,29 +13,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="#FFFFFF">
+        android:background="@android:color/white">
 
-        <!-- Título de la lista -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Título de la Lista"
+            android:text="Título de la lista"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#000000"/>
+            android:textColor="@color/text_primary"/>
 
-        <!-- Descripción -->
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Descripción"
             android:textSize="14sp"
-            android:textColor="#333333"
+            android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp"/>
 
-        <!-- Fila inferior -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,24 +40,23 @@
             android:layout_marginTop="12dp"
             android:gravity="center_vertical">
 
-            <!-- Contador de productos -->
             <TextView
                 android:id="@+id/tvCount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="0 productos"
-                android:textSize="12sp"
-                android:textColor="#6200EE"/>
+                android:textSize="13sp"
+                android:textColor="@color/pastel_green"/>
 
-            <!-- Botón para marcar como completada -->
             <Button
                 android:id="@+id/btnMarkComplete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Eliminar"
-                android:background="@android:color/holo_red_dark"
-                android:textColor="@android:color/white"/>
+                android:textSize="12sp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_button_red"/>
 
         </LinearLayout>
 

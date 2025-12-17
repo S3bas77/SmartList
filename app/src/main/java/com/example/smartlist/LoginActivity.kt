@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Verificar si ya está logueado
         if (sessionManager.isLoggedIn()) {
-            startActivity(Intent(this, Profile::class.java))
+            startActivity(Intent(this, Navbar::class.java))
             finish()
         }
 
@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
                         sessionManager.setLoggedIn(true)
 
                         Toast.makeText(this, "Bienvenido", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, Profile::class.java))
+                        startActivity(Intent(this, Navbar::class.java))
                         finish()
                     } else {
                         Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()

@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         tvWelcome.text = "Bienvenido: ${currentUser?.email ?: "Usuario"}"
 
         btn.setOnClickListener {
-            val intent = Intent(this, Profile::class.java)
+            val intent = Intent(this, Navbar::class.java)
             startActivity(intent)
         }
     }
