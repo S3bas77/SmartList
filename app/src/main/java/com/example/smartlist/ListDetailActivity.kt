@@ -89,16 +89,29 @@ class ListDetailActivity : AppCompatActivity() {
     }
 
     private fun toggleProductCheck(producto: Producto) {
+        // Actualizar estado local inmediatamente
+        val nuevoEstado = !producto.marcado
+
+        // Actualizar Firestore
         db.collection("usuarios")
             .document(userId)
             .collection("listas")
             .document(listaId)
             .collection("productos")
             .document(producto.id)
-            .update("marcado", !producto.marcado)
+            .update("marcado", nuevoEstado)
+            .addOnSuccessListener {
+                // ✅ Opcional: Notificar al adaptador del cambio
+                adapter.notifyItemChanged(getProductPosition(producto.id))
+            }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                // Revertir en UI si falla
             }
+    }
+    private fun getProductPosition(productId: String): Int {
+        // Buscar posición del producto en la lista
+        return adapter.getProductoList().indexOfFirst { it.id == productId }
     }
 
     private fun toggleListComplete() {

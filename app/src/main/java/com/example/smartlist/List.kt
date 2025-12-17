@@ -55,6 +55,7 @@ class List : Fragment() {
         binding.btnPending.setOnClickListener {
             if (currentFilter != "pending") {
                 currentFilter = "pending"
+                adapter.updateList(emptyList())
                 updateButtonStates()
                 loadShoppingLists()
             }
@@ -63,6 +64,7 @@ class List : Fragment() {
         binding.btnCompleted.setOnClickListener {
             if (currentFilter != "completed") {
                 currentFilter = "completed"
+                adapter.updateList(emptyList())
                 updateButtonStates()
                 loadShoppingLists()
             }
@@ -73,20 +75,18 @@ class List : Fragment() {
     private fun deleteShoppingList(list: ShoppingList) {
         val userId = auth.currentUser?.uid ?: return
 
-        // Confirmación antes de eliminar
         android.app.AlertDialog.Builder(requireContext())
             .setTitle("Eliminar lista")
             .setMessage("¿Estás seguro de eliminar '${list.titulo}'?")
             .setPositiveButton("Eliminar") { _, _ ->
-                // Eliminar la lista y sus productos
+
                 db.collection("usuarios")
                     .document(userId)
                     .collection("listas")
                     .document(list.id)
                     .delete()
                     .addOnSuccessListener {
-                        Toast.makeText(requireContext(), "✅ Lista eliminada", Toast.LENGTH_SHORT).show()
-                        // Recargar listas
+                        Toast.makeText(requireContext(), "Lista eliminada", Toast.LENGTH_SHORT).show()
                         loadShoppingLists()
                     }
                     .addOnFailureListener { e ->
@@ -126,26 +126,18 @@ class List : Fragment() {
                 return@addSnapshotListener
             }
 
-            // 🔍 ESTOS LOGS SON CRÍTICOS:
-            Log.d("DEBUG_FIREBASE", "=== INICIO DATOS FIREBASE ===")
+            Log.d("DEBUG_FIREBASE", "=== FILTRO ACTUAL: $currentFilter ===")
             Log.d("DEBUG_FIREBASE", "Documentos recibidos: ${snapshots?.size() ?: 0}")
 
             val lists = mutableListOf<ShoppingList>()
             snapshots?.documents?.forEach { document ->
-                // 1. Datos CRUDOS de Firestore
-                Log.d("DEBUG_FIREBASE", "--- Documento ID: ${document.id} ---")
-                Log.d("DEBUG_FIREBASE", "Datos crudos: ${document.data}")
-
-                // 2. Mapear a objeto
                 val list = document.toObject(ShoppingList::class.java)
-                Log.d("DEBUG_FIREBASE", "Objeto mapeado: ${list?.titulo} | ${list?.descripcion}")
-
                 list?.id = document.id
                 list?.let { lists.add(it) }
             }
 
-            Log.d("DEBUG_FIREBASE", "=== FIN DATOS FIREBASE ===")
             adapter.updateList(lists)
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -155,32 +147,6 @@ class List : Fragment() {
         intent.putExtra("LISTA_TITULO", list.titulo)
         intent.putExtra("LISTA_COMPLETADA", list.completada)
         startActivity(intent)
-    }
-
-    private fun toggleListComplete(list: ShoppingList) {
-        val userId = auth.currentUser?.uid ?: return
-
-        val newCompletedState = !list.completada
-
-        db.collection("usuarios")
-            .document(userId)
-            .collection("listas")
-            .document(list.id)
-            .update("completada", newCompletedState)
-            .addOnSuccessListener {
-                // FORZAR recarga del listener actual
-                loadShoppingLists()
-
-                val message = if (newCompletedState)
-                    "Lista movida a Lisats Terminadas"
-                else
-                    "Lista movida a Listas Pendientes"
-
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
     }
 
     override fun onDestroyView() {
