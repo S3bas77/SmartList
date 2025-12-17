@@ -96,7 +96,7 @@ class ListDetailActivity : AppCompatActivity() {
             .document(producto.id)
             .update("marcado", nuevoEstado)
             .addOnSuccessListener {
-                // ✅ Opcional: Notificar al adaptador del cambio
+                // Opcional: Notificar al adaptador del cambio
                 adapter.notifyItemChanged(getProductPosition(producto.id))
             }
             .addOnFailureListener { e ->
@@ -127,9 +127,9 @@ class ListDetailActivity : AppCompatActivity() {
                 }
 
                 val mensaje = if (nuevoEstado)
-                    "✅ Lista marcada como terminada"
+                    "Lista marcada como terminada"
                 else
-                    "↩ Lista marcada como pendiente"
+                    "Lista marcada como pendiente"
 
                 Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
             }
@@ -177,7 +177,7 @@ class ListDetailActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        finish()
         return true
     }
 

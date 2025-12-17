@@ -87,12 +87,12 @@ class Edit : Fragment() {
         binding.etProductName.text?.clear()
         binding.etProductQuantity.setText("1")
 
-        Toast.makeText(requireContext(), "✅ Producto agregado", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Producto agregado", Toast.LENGTH_SHORT).show()
     }
 
     private fun actualizarListaProductosUI() {
         if (productos.isEmpty()) {
-            binding.tvProductsList.text = "📝 No hay productos agregados..."
+            binding.tvProductsList.text = "No hay productos agregados..."
             binding.tvProductCount.text = "Total: 0 productos"
             return
         }
@@ -188,7 +188,7 @@ class Edit : Fragment() {
         binding.etDescription.text?.clear()
         binding.etProductName.text?.clear()
         binding.etProductQuantity.setText("1")
-        binding.tvProductsList.text = "📝 No hay productos agregados..."
+        binding.tvProductsList.text = "No hay productos agregados..."
         binding.tvProductCount.text = "Total: 0 productos"
         productos.clear()
     }
