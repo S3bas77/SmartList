@@ -109,7 +109,6 @@ class Edit : Fragment() {
     private fun guardarListaConProductos() {
         val titulo = binding.etTitle.text.toString().trim()
 
-        // Validaciones
         if (titulo.isEmpty()) {
             binding.etTitle.error = "Ingresa un título para la lista"
             return
@@ -140,7 +139,6 @@ class Edit : Fragment() {
             .add(listData)
             .addOnSuccessListener { documentReference ->
                 val listaId = documentReference.id
-                // 2. Guardar productos en subcolección
                 guardarProductosEnFirestore(userId, listaId)
             }
             .addOnFailureListener { e ->
@@ -149,7 +147,6 @@ class Edit : Fragment() {
     }
 
     private fun guardarProductosEnFirestore(userId: String, listaId: String) {
-        // Usar batch para guardar todos los productos atómicamente
         val batch = db.batch()
 
         productos.forEach { producto ->
@@ -183,7 +180,6 @@ class Edit : Fragment() {
     }
 
     private fun limpiarFormulario() {
-        // Limpiar todos los campos
         binding.etTitle.text?.clear()
         binding.etDescription.text?.clear()
         binding.etProductName.text?.clear()
