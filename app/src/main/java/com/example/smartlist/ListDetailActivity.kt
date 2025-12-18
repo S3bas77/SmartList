@@ -39,24 +39,19 @@ class ListDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        // Inicializar Firebase
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         userId = auth.currentUser?.uid ?: return finish()
 
-        // Configurar RecyclerView
         adapter = ProductAdapter { producto -> toggleProductCheck(producto) }
         binding.recyclerProducts.layoutManager = LinearLayoutManager(this)
         binding.recyclerProducts.adapter = adapter
 
-        // Configurar botón de estado
         updateCompleteButton()
 
         binding.btnToggleComplete.setOnClickListener {
             toggleListComplete()
         }
-
-        // Cargar productos
         loadProducts()
     }
 
@@ -101,7 +96,7 @@ class ListDetailActivity : AppCompatActivity() {
             .document(producto.id)
             .update("marcado", nuevoEstado)
             .addOnSuccessListener {
-                // ✅ Opcional: Notificar al adaptador del cambio
+                // Opcional: Notificar al adaptador del cambio
                 adapter.notifyItemChanged(getProductPosition(producto.id))
             }
             .addOnFailureListener { e ->
@@ -132,9 +127,9 @@ class ListDetailActivity : AppCompatActivity() {
                 }
 
                 val mensaje = if (nuevoEstado)
-                    "✅ Lista marcada como terminada"
+                    "Lista marcada como terminada"
                 else
-                    "↩ Lista marcada como pendiente"
+                    "Lista marcada como pendiente"
 
                 Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
             }
@@ -182,7 +177,7 @@ class ListDetailActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        finish()
         return true
     }
 

@@ -16,16 +16,8 @@ class SessionManager(context: Context) {
         prefs.edit().putString(USER_TOKEN, token).apply()
     }
 
-    fun getAuthToken(): String? {
-        return prefs.getString(USER_TOKEN, null)
-    }
-
     fun saveUserEmail(email: String) {
         prefs.edit().putString(USER_EMAIL, email).apply()
-    }
-
-    fun getUserEmail(): String? {
-        return prefs.getString(USER_EMAIL, null)
     }
 
     fun setLoggedIn(loggedIn: Boolean) {
@@ -34,9 +26,5 @@ class SessionManager(context: Context) {
 
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(IS_LOGGED_IN, false)
-    }
-
-    fun clearSession() {
-        prefs.edit().clear().apply()
     }
 }
